@@ -1,17 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
+  main: {
+    paddingTop: '150px',
+  },
   paper: {
-    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(2),
-  },
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-    },
+    overflow: 'hidden',
+    marginTop: '0px',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -23,8 +22,5 @@ export default makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  googleButton: {
-    marginBottom: theme.spacing(2),
   },
 }));

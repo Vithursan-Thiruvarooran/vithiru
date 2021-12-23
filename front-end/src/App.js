@@ -1,17 +1,28 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Auth from './components/auth/auth';
-import Home from './components/home/home';
+import Auth from './components/auth/Auth';
+import Home from './components/home/Home';
+import Navbar from './components/navbar/Navbar';
+
+import useStyles from './App.styles';
 
 const App = () => {
+  const classes = useStyles();
+
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path='/' component={Home}></Route>
-        <Route exact path='/auth' component={Auth}></Route>
-      </Switch>
-    </BrowserRouter>
+    <div className={classes.app}>
+      <BrowserRouter>
+        <Navbar />
+        <Switch>
+          <Route exact path='/' component={Home}></Route>
+          <Route exact path='/auth' component={Auth}></Route>
+        </Switch>
+        <div style={{ marginTop: '1000px' }}>
+          asdfashdjkfhaskjdf
+        </div>
+      </BrowserRouter >
+    </div >
   );
 }
 export default App;

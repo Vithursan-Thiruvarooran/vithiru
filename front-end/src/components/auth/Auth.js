@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { signin, signup } from '../../actions/auth';
 import useStyles from './styles';
-import Input from './input';
+import Input from './Input';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
@@ -49,7 +49,7 @@ const SignUp = () => {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container className={classes.main} component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
