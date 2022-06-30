@@ -1,85 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { AppBar, Avatar, Typography, Toolbar, Button } from "@material-ui/core";
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import CssBaseline from '@mui/material/CssBaseline';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Slide from '@mui/material/Slide';
+
+import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../constants/actionTypes';
 import decode from 'jwt-decode';
 import useStyles from './styles';
-import { debounce } from '../../utilities/helpers';
 
-const Navbar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+import AccountMenu from './AccountMenu';
+
+function HideOnScroll(props) {
+  const { children } = props;
+  const trigger = useScrollTrigger();
+
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
+
+HideOnScroll.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+const Navbar = (props) => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const history = useHistory();
   const classes = useStyles();
 
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const authData = useSelector(state => state.auth);
 
-  const handleScroll = debounce(() => {
-    const currentScrollPos = window.pageYOffset;
+  const user = JSON.parse(localStorage.getItem('profile'));
 
-    setVisible((prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 70) || currentScrollPos < 10);
+  //console.log(user);
 
-    setPrevScrollPos(currentScrollPos);
-  }, 100);
-
+  if (user && !authData.user) {
+    dispatch({ type: actionType.LOGIN_SUCCESS, data: user })
+  };
+  
   const logout = () => {
     dispatch({ type: actionType.LOGOUT });
-
+    
     history.push('/auth');
-
-    setUser(null);
+    window.location.reload();
   };
 
   useEffect(() => {
-    const token = user?.token;
+    //const token = user?.token;
 
-    if (token) {
-      const decodedToken = decode(token);
+    if (authData?.token) {
+      const decodedToken = decode(authData.token);
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
 
-    setUser(JSON.parse(localStorage.getItem('profile')));
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-
-
-  }, [location, prevScrollPos, visible, handleScroll]);
-
-  const navbarStyles = {
-    position: 'fixed',
-    height: '60px',
-    width: '100%',
-    textAlign: 'center',
-    transition: 'top 0.6s',
-    background: 'transparent',
-  }
+  }, [authData]);  
 
   return (
-    <div style={{ ...navbarStyles, top: visible ? '0' : '-80px' }}>
-      <AppBar className={classes.appBar} >
-        <div className={classes.brandContainer}>
-          <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">Authentication</Typography>
-        </div>
-        <Toolbar className={classes.toolbar}>
-          {user ? (
-            <div className={classes.profile}>
-              {/*<Button component={Link} to="/myAccount" variant="contained" color="primary">Account</Button>*/}
-              <Avatar className={classes.purple} alt={user?.result.firstName} src={user?.result.imageUrl}>{user?.result.firstName.charAt(0)}</Avatar>
-              <Typography component={Link} to="/" className={classes.userName} variant="h6">{user?.result.firstName}</Typography>
-              <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
-            </div>
-          ) : (
-            <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div >
-  )
-};
+    <React.Fragment>
+      <CssBaseline />
+      <HideOnScroll {...props}>
+        <AppBar color='transparent' classes={ {root: classes.appBar} }>
+          <div className={classes.brandContainer}>
+            <Typography 
+              component={Link} 
+              to="/" 
+              className={classes.heading} 
+              variant="h2" 
+              align="left">
+                Dash
+            </Typography>
+          </div>
+          <Toolbar className={classes.toolbar}>
+            {authData.user ? (
+              <div className={classes.profile}>
+                <AccountMenu authData={authData} logout={logout}></AccountMenu>
+                <Typography 
+                  component={Link} 
+                  to="/" 
+                  className={classes.userName} 
+                  variant="h6">
+                    {authData?.user.firstName}
+                </Typography>
+                {/* <Button variant="contained" className={classes.logout} color="primary" onClick={logout}>Logout</Button> */}
+              </div>
+            ) : (
+              <Button 
+                component={Link} 
+                to="/auth" 
+                variant="contained" 
+                color="primary">
+                  Sign In
+              </Button>
+            )}
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
+    </React.Fragment>
+  );
+}
 
 export default Navbar;

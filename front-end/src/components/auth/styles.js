@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
   main: {
@@ -11,14 +11,17 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(2),
     overflow: 'hidden',
     marginTop: '0px',
+    backgroundColor: 'transparent',
+    pacity: 0.5,
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
+    color: 'blue',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),

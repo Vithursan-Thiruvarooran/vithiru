@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Auth from './components/auth/Auth';
 import Home from './components/home/Home';
 import Navbar from './components/navbar/Navbar';
+import Profile from './components/profile/Profile';
 
 import useStyles from './App.styles';
 
@@ -17,10 +18,11 @@ const App = () => {
         <Switch>
           <Route exact path='/' component={Home}></Route>
           <Route exact path='/auth' component={Auth}></Route>
+          <Route exact path='/profile' component={Profile}></Route>
         </Switch>
-        <div style={{ marginTop: '1000px' }}>
+        {/* <div style={{ marginTop: '1500px' }}>
           asdfashdjkfhaskjdf
-        </div>
+        </div> */}
       </BrowserRouter >
     </div >
   );

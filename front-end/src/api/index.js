@@ -12,6 +12,10 @@ API.interceptors.request.use((req) => {
 
 const SIGNIN_PATH = '/user/signin';
 const SIGNUP_PATH = '/user/signup';
+const USER_PATH = '/user/';
+
 
 export const signIn = (formData) => API.post(SIGNIN_PATH, formData);
 export const signUp = (formData) => API.post(SIGNUP_PATH, formData);
+export const update = (formData) => API.patch(USER_PATH + formData.id, formData);
+export const deleteUser = (formData) => API.delete(USER_PATH + formData.id);

@@ -1,7 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { deepPurple } from '@material-ui/core/colors';
+import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
+  '.MuiAppBar-root': {
+    color: 'purple',
+  },
   appBar: {
     borderRadius: 2,
     display: 'flex',
@@ -11,14 +13,10 @@ export default makeStyles((theme) => ({
     padding: '10px 20px',
     position: "static",
     height: '80px',
-    background: 'transparent',
   },
   heading: {
     color: 'rgba(255,255,255, 1)',
     textDecoration: 'none',
-  },
-  image: {
-    marginLeft: '15px',
   },
   toolbar: {
     display: 'flex',
@@ -28,7 +26,7 @@ export default makeStyles((theme) => ({
   profile: {
     display: 'flex',
     justifyContent: 'space-evenly',
-    width: '400px',
+    width: '150px',
   },
   userName: {
     display: 'flex',
@@ -39,9 +37,4 @@ export default makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  purple: {
-    color: 'rgb(147,112,219)',
-    backgroundColor: deepPurple[500],
-  },
-
 }));
