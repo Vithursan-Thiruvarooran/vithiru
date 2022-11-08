@@ -10,6 +10,7 @@ import {
   update,
   deleteUser,
   getUser,
+  verifyUser,
   verifyEmail
 } from '../controllers/user.js';
 
@@ -21,6 +22,7 @@ router.post('/signup', signupValidate, signup);
 router.patch('/:id', [signupValidate, auth], update);
 router.delete('/:id', auth, deleteUser);
 router.get('/:id', auth, getUser);
-router.get('/verifyEmail/:id', auth, verifyEmail);
+router.patch('/:id/verifyUser/', verifyUser);
+//router.get('/verifyEmail/:id', verifyEmail);
 
 export default router;

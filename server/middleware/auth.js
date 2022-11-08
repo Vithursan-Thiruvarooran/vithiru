@@ -37,6 +37,9 @@ const auth = async (req, res, next) => {
       return res.status(201).json({ message: "Unauthenticated" });
     }
 
+    const user = await User.findById(req.userId);
+    if (!user.active) return res.status(401).json({ message: "Need account to be verified" });
+
     next();
   } catch (error) {
     //console.log(error);

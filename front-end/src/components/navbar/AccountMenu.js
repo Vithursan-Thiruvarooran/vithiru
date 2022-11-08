@@ -40,7 +40,7 @@ const AccountMenu = ({authData, logout}) => {
       </IconButton>
       <Menu
         anchorEl={anchorEl}
-        getContentAnchorEl={null}
+        getcontentanchorel={null}
         id="account-menu"
         open={open}
         onClose={handleClose}
@@ -77,8 +77,7 @@ const AccountMenu = ({authData, logout}) => {
         <MenuItem 
           component={Link} 
           to={{
-            pathname: "/profile",
-            state: {profile: true}
+            pathname: "/profile"
           }}
         >
           <ListItemIcon>

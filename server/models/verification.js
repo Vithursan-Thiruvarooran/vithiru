@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 
+var Schema = mongoose.Schema;
+
 const verificationSchema = mongoose.Schema({
   //username: { type: String, required: ture },
-  user: { type: String, required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   code: { type: String, required: true }
 });
 

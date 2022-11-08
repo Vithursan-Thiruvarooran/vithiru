@@ -5,7 +5,7 @@ import Auth from '../auth/Auth';
 const Profile = () => {
 
   return (
-    <Auth></Auth>
+    <Auth profile></Auth>
   )
 };
 

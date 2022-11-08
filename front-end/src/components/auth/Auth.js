@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { 
-  Avatar, 
+  Avatar,
+  Alert,
   Button, 
   CircularProgress, 
   Paper, 
@@ -18,31 +19,33 @@ import {
   Dialog
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Alert,  AlertTitle} from '@mui/lab';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import * as actionType from '../../constants/actionTypes';
 import { signin, signup, update, deleteUser } from '../../actions/auth';
-import { signUpValidationSchema, profileValidationSchema } from './validationSchemas';
-import useStyles from './styles';
-import Input from './Input';
+import { signUpValidationSchema, profileValidationSchema } from '../validationSchemas/validationSchemas';
+import TextInput from '../formInputs/TextInput';
+import FormButton from '../formInputs/FormButton';
 
-const Auth = () => {
+// const FormButton = styled(Button)(({ theme }) => ({
+//   marginTop: 15,
+// }));
+
+const Auth = ({profile}) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const classes = useStyles();
 
-  const location = useLocation()
-  const profile = location.pathname === '/profile';
+  //const location = useLocation()
+  //const profile = location.pathname === '/profile';
   const [disabled, setDisabled] = useState(profile);
   const title = profile ? 'Profile' : 'Sign Up';
   const button = profile ? 'Update' : 'Sign Up';
 
   const authData = useSelector(state => state.auth);
+  //console.log(authData);
 
   if (profile) {
-    
     const user = JSON.parse(localStorage.getItem('profile'));
 
     if (!user) history.push('/auth');
@@ -52,7 +55,7 @@ const Auth = () => {
     };
   }
 
-  const { message } = useSelector(state => state.message);
+  const message = useSelector(state => state.message.text);
 
   const handleSubmit = (values) => {
     //e.preventDefault();
@@ -160,71 +163,107 @@ const Auth = () => {
   };
 
   return (
-    <Container className={classes.main} component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{paddingTop: '150px'}}>
       <CssBaseline />
-      <Paper color='transparent' className={classes.paper} elevation={3}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">{formik.values.isSignup ? title : 'Sign In'}</Typography>
-        {profile && 
-        <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={toggleEdit}>
-            {disabled ? "Edit" : "Cancel"}
-        </Button>}
-        <form className={classes.form} onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
-            {formik.values.isSignup && (
-              <>
-                <Input
-                  id="firstName"
-                  name="firstName" 
-                  label="First Name"
-                  value={formik.values.firstName}
-                  disabled={disabled}
-                  handleChange={formik.handleChange} 
-                  autoFocus 
-                  half
-                  error={formik.touched.password && Boolean(formik.errors.firstName)}
-                  helperText={formik.touched.password && formik.errors.firstName}
-                />
-                <Input
-                  id="lastName"
-                  name="lastName" 
-                  label="Last Name"
-                  value={formik.values.lastName}
-                  disabled={disabled}
-                  handleChange={formik.handleChange} 
-                  half
-                  error={formik.touched.password && Boolean(formik.errors.lastName)}
-                  helperText={formik.touched.password && formik.errors.lastName}
-                />
-              </>
-            )}
-            <Input
-              id="email"
-              name="email" 
-              label="Email Address" 
-              value={formik.values.email}
-              disabled={disabled}
-              handleChange={formik.handleChange} 
-              type="email"
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-            <Input
-              id="password"
-              name="password" 
-              label="Password" 
-              value={formik.values.password}
-              disabled={disabled}
-              handleChange={formik.handleChange} 
-              type={showPassword ? 'text' : 'password'}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              handleShowPassword={handleShowPassword}
-            />
-            {formik.values.isSignup && 
-            <Input 
+      <Paper elevation={6}
+        sx={
+          {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 2,
+            backgroundColor: 'black',
+          }
+        }
+      >
+        <Grid container spacing={2} justifyContent="center">
+        
+          <Grid item container spacing={1} justifyContent="center">
+            <Grid item xs={12} align="center">
+              <Avatar >
+                <LockOutlinedIcon />
+              </Avatar>
+            </Grid>
+            <Grid item xs={12} align="center">
+              <Typography variant="h5">
+                {formik.values.isSignup ? title : 'Sign In'}
+              </Typography>
+            </Grid>
+            
+            { profile &&
+              <Grid item align="center">
+                <Alert align="center" variant="standard" severity={authData.user?.active ? 'success' : 'error'}>
+                  {authData.user?.active ? "Account is verified" : 'Account needs verification'}
+                </Alert>
+              </Grid>
+            }
+          </Grid>
+
+          <Grid item xs={12} sm={12} > 
+            {profile && 
+              <FormButton 
+                fullWidth 
+                variant="contained" 
+                color="primary" 
+                onClick={toggleEdit}>
+                  {disabled ? "Edit" : "Cancel"}
+              </FormButton>
+            }
+          </Grid>
+
+          {formik.values.isSignup && (
+            <>
+              <TextInput
+                id="firstName"
+                name="firstName" 
+                label="First Name"
+                value={formik.values.firstName}
+                disabled={disabled}
+                handleChange={formik.handleChange} 
+                autoFocus 
+                sm={6}
+                error={formik.touched.password && Boolean(formik.errors.firstName)}
+                helperText={formik.touched.password && formik.errors.firstName}
+              />
+              <TextInput
+                id="lastName"
+                name="lastName" 
+                label="Last Name"
+                value={formik.values.lastName}
+                disabled={disabled}
+                handleChange={formik.handleChange} 
+                sm={6}
+                error={formik.touched.password && Boolean(formik.errors.lastName)}
+                helperText={formik.touched.password && formik.errors.lastName}
+              />
+            </>
+          )}
+
+          <TextInput
+            id="email"
+            name="email" 
+            label="Email Address" 
+            value={formik.values.email}
+            disabled={disabled}
+            handleChange={formik.handleChange} 
+            type="email"
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextInput
+            id="password"
+            name="password" 
+            label="Password" 
+            value={formik.values.password}
+            disabled={disabled}
+            handleChange={formik.handleChange} 
+            type={showPassword ? 'text' : 'password'}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            handleShowPassword={handleShowPassword}
+          />
+          {formik.values.isSignup && 
+            <TextInput 
               name="confirmPassword" 
               label="Repeat Password"
               disabled={disabled}
@@ -232,35 +271,46 @@ const Auth = () => {
               type="password"
               error={formik.touched.password && Boolean(formik.errors.confirmPassword)}
               helperText={formik.touched.password && formik.errors.confirmPassword}
-            />}
-          </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} disabled={loading || disabled}>
+            />
+          }
+          <FormButton
+            type="submit" 
+            variant="contained" 
+            color="primary"
+            onClick={formik.handleSubmit} 
+            disabled={loading || disabled}
+          >
             {loading && <CircularProgress size={25} />}
             {(!loading) && (formik.values.isSignup ? button : 'Sign In')}
-          </Button>
+          </FormButton>
           {profile && 
-            <Button fullWidth variant="contained" color="secondary" onClick={handleClickOpenConfirm} disabled={loading || disabled}>
-              {loading && <CircularProgress size={25} />}
-              DELETE
-            </Button>
+            <FormButton  
+              variant="contained" 
+              color="secondary" 
+              onClick={handleClickOpenConfirm} 
+              disabled={loading || disabled}
+            >
+                {loading && <CircularProgress size={25} />}
+                DELETE
+            </FormButton>
           }
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              {!profile && 
-                <Button onClick={switchMode}>
-                  {formik.values.isSignup ? 'Already have an account? Sign in' : "Don't have an account? Sign Up"}
-                </Button>
-              }
-            </Grid>
+        </Grid>    
+        
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            {!profile && 
+              <Button onClick={switchMode}>
+                {formik.values.isSignup ? 'Already have an account? Sign in' : "Don't have an account? Sign Up"}
+              </Button>
+            }
           </Grid>
-        </form>
+        </Grid>
+  
         {message && (
-          <div>
-            <Alert variant="outlined" severity="error">
-              <AlertTitle>Error</AlertTitle>
+            <Alert variant="standard" severity="error">
+              
               {message}
             </Alert>
-          </div>
         )}
       </Paper>
       <div>

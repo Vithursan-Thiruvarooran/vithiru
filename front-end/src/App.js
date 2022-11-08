@@ -5,24 +5,25 @@ import Auth from './components/auth/Auth';
 import Home from './components/home/Home';
 import Navbar from './components/navbar/Navbar';
 import Profile from './components/profile/Profile';
+import Catan from './components/catan/Catan';
+import VerifyUser from './components/auth/VerifyUser';
 
-import useStyles from './App.styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const App = () => {
-  const classes = useStyles();
 
   return (
-    <div className={classes.app}>
+    <div >
+      <CssBaseline />
       <BrowserRouter>
         <Navbar />
         <Switch>
           <Route exact path='/' component={Home}></Route>
           <Route exact path='/auth' component={Auth}></Route>
+          <Route exact path='/user/:id/verifyUser/:token' component={VerifyUser}></Route>
           <Route exact path='/profile' component={Profile}></Route>
+          <Route exact path='/catan' component={Catan}></Route>
         </Switch>
-        {/* <div style={{ marginTop: '1500px' }}>
-          asdfashdjkfhaskjdf
-        </div> */}
       </BrowserRouter >
     </div >
   );

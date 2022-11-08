@@ -7,7 +7,11 @@ const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   id: { type: String },
-  active: { type: Boolean, default: false }
+  active: { type: Boolean, default: false },
+  role: { type: String, default: 'USER' }
+},
+{
+  timestamps: true
 });
 
 const User = mongoose.model('User', userSchema);

@@ -5,6 +5,7 @@ import {
   SIGN_UP_FAIL,
   USER_UPDATE_SUCCESS,
   USER_DELETE_SUCCESS,
+  VERIFIED_USER,
   SET_MESSAGE } from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
@@ -94,6 +95,32 @@ export const deleteUser = (formData) => async (dispatch) => {
     const { data } = await api.deleteUser(formData);
 
     dispatch({ type: USER_DELETE_SUCCESS, data });
+    return Promise.resolve();
+
+    //router.push('/');
+  } catch (error) {
+    if (error.response){
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      //dispatch({ type: USER_UPDATE_FAIL, data: error.response.data.message });
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+      return Promise.reject();
+    }
+  }
+};
+
+export const verifyUser = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.verifyUser(formData);
+
+    dispatch({ type: VERIFIED_USER, data });
     return Promise.resolve();
 
     //router.push('/');

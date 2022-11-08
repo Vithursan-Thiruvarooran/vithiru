@@ -5,8 +5,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CssBaseline from '@mui/material/CssBaseline';
 
-const Input = ({ id, name, handleChange, label, half, autoFocus, type, value, error, helperText, handleShowPassword, disabled }) => (
-  <Grid item xs={12} sm={half ? 6 : 12}>
+const TextInput = ({ children, select, id, name, handleChange, label, xs, sm, size, autoFocus, type, value, error, helperText, handleShowPassword, disabled }) => (
+  <Grid item xs={xs ? xs : 12} sm={sm}>
     <CssBaseline />
     <TextField
       id={id}
@@ -17,9 +17,11 @@ const Input = ({ id, name, handleChange, label, half, autoFocus, type, value, er
       label={label}
       autoFocus={autoFocus}
       type={type}
+      select={select}
       value={value}
       disabled={disabled}
       color="primary"
+      size={size}
       error={error}
       helperText={helperText}
       InputProps={name === 'password' ? {
@@ -31,8 +33,10 @@ const Input = ({ id, name, handleChange, label, half, autoFocus, type, value, er
           </InputAdornment>
         ),
       } : null}
-    />
+    >
+      {children}
+    </TextField>
   </Grid>
 );
 
-export default Input;
+export default TextInput;

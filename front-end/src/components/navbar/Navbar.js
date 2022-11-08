@@ -10,12 +10,23 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../constants/actionTypes';
 import decode from 'jwt-decode';
-import useStyles from './styles';
 
 import AccountMenu from './AccountMenu';
+
+const drawerWidth = 240;
 
 function HideOnScroll(props) {
   const { children } = props;
@@ -35,7 +46,6 @@ HideOnScroll.propTypes = {
 const Navbar = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const classes = useStyles();
 
   const authData = useSelector(state => state.auth);
 
@@ -51,7 +61,7 @@ const Navbar = (props) => {
     dispatch({ type: actionType.LOGOUT });
     
     history.push('/auth');
-    window.location.reload();
+    //window.location.reload();
   };
 
   useEffect(() => {
@@ -62,36 +72,102 @@ const Navbar = (props) => {
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
 
-  }, [authData]);  
+  }, [authData]);
+
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        vithiru
+      </Typography>
+      <Divider />
+      <List>
+        <ListItem key='Home' disablePadding>
+          <ListItemButton 
+            component={Link} 
+            to={{
+              pathname: "/"
+            }}
+            sx={{ textAlign: 'center' }}>
+            <ListItemText primary='Home' />
+          </ListItemButton>
+        </ListItem>
+        <ListItem key='Catan' disablePadding>
+          <ListItemButton 
+            component={Link} 
+            to={{
+              pathname: "/catan"
+            }}
+            sx={{ textAlign: 'center' }}>
+            <ListItemText primary='Catan Form' />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
+  
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <React.Fragment>
       <CssBaseline />
       <HideOnScroll {...props}>
-        <AppBar color='transparent' classes={ {root: classes.appBar} }>
-          <div className={classes.brandContainer}>
-            <Typography 
-              component={Link} 
-              to="/" 
-              className={classes.heading} 
-              variant="h2" 
-              align="left">
-                Dash
-            </Typography>
-          </div>
-          <Toolbar className={classes.toolbar}>
+        <AppBar 
+          //color='transparent' 
+          //position='static' 
+          sx={{
+            borderBottomLeftRadius: 5,
+            borderBottomRightRadius: 5,
+            display: 'flex',
+            flexDirection: 'row',
+            padding: '10px 20px',  
+          }}
+        >
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+          >
+            <MenuIcon />
+          </IconButton>
+        
+          <Typography 
+            component={Link} 
+            to="/" 
+            variant="h2" 
+            sx={{ flexGrow: 1, textDecoration: 'none' }}
+          >
+              vithiru
+          </Typography>
+  
+          <Toolbar sx={{ padding: 0 }}>
             {authData.user ? (
-              <div className={classes.profile}>
+              <>
+                {/* <div className={classes.profile}> */}
                 <AccountMenu authData={authData} logout={logout}></AccountMenu>
-                <Typography 
-                  component={Link} 
-                  to="/" 
-                  className={classes.userName} 
-                  variant="h6">
-                    {authData?.user.firstName}
-                </Typography>
-                {/* <Button variant="contained" className={classes.logout} color="primary" onClick={logout}>Logout</Button> */}
-              </div>
+                  <Typography 
+                    component={Link} 
+                    to="/" 
+                    //className={classes.userName} 
+                    variant="h6"
+                    sx={{ 
+                      textDecoration: "none", 
+                      alignItems: 'center', 
+                      display: 'flex' 
+                    }}
+                  >
+                      {authData?.user.firstName}
+                  </Typography>
+                  
+                {/* </div>  */}
+              </>
             ) : (
               <Button 
                 component={Link} 
@@ -102,8 +178,26 @@ const Navbar = (props) => {
               </Button>
             )}
           </Toolbar>
+      
         </AppBar>
       </HideOnScroll>
+      <Box component="nav">
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            // display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
     </React.Fragment>
   );
 }
