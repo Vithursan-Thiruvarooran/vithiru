@@ -1,2 +1,2 @@
-# authentication
-Simple signin and signout built with node, mongodb, and react.
+# vithiru
+Personal dashboard with Catan data tracking.
