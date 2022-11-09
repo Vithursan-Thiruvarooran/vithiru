@@ -63,7 +63,21 @@ const CorrTable = () => {
     responsive: "standard",
     rowsPerPage: 10,
     page: 0,
-    
+    sortOrder: {
+      name: 'player',
+      direction: 'desc'
+    },
+    customSort: (data, colIndex, order, meta) => {
+      return data.sort((a, b) => {
+        console.log(order);
+        console.log(a.data[colIndex]);
+        if (a.data[0] === "Base/Total") { return -1 } else 
+        if (b.data[0] === "Base/Total") { return 1 } else 
+        if (a.data[colIndex] === null) { return 1 } else 
+        if (b.data[colIndex] === null) { return -1 }
+        return (a.data[colIndex] < b.data[colIndex] ? -1: 1 ) * (order === 'desc' ? 1 : -1);
+      });
+    },
   };
 
   var corrStats = useSelector(state => state.catan.catanStats.corrStats);
