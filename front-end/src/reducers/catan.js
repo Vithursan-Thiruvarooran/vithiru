@@ -48,14 +48,14 @@ const catanReducer = (state =
         state.gamePlayersForm.push(action.data)
         return { ...state, errors: null };
       case UPDATE_GAME_PLAYER:
-        for(var i = 0; i < state.gamePlayersForm.length; i++){
+        for(let i = 0; i < state.gamePlayersForm.length; i++){
           if(state.gamePlayersForm[i]._id === action.data._id){
             state.gamePlayersForm[i] = action.data;
           }
         }
         return { ...state, errors: null };
       case DELETE_GAME_PLAYER:
-        for(var j = 0; j < state.gamePlayersForm.length; j++){
+        for(let j = 0; j < state.gamePlayersForm.length; j++){
           if(state.gamePlayersForm[j]._id === action.data._id){
             state.gamePlayersForm.splice(j, 1);
           }
@@ -74,7 +74,7 @@ const catanReducer = (state =
       case GET_PLAYERS:
         return { ...state, players: action.data.players };
       case DELETE_PLAYER:
-        for(var k = 0; k < state.players.length; k++){
+        for(let k = 0; k < state.players.length; k++){
           if(state.players[k]._id === action.data._id){
             state.players.splice(k, 1);
           }

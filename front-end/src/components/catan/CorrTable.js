@@ -69,8 +69,6 @@ const CorrTable = () => {
     },
     customSort: (data, colIndex, order, meta) => {
       return data.sort((a, b) => {
-        console.log(order);
-        console.log(a.data[colIndex]);
         if (a.data[0] === "Base/Total") { return -1 } else 
         if (b.data[0] === "Base/Total") { return 1 } else 
         if (a.data[colIndex] === null) { return 1 } else 

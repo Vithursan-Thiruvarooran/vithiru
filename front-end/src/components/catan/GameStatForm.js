@@ -290,7 +290,7 @@ const GameStatForm = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseConfirm}>No</Button>
-          <Button color="secondary" onClick={handleDelete} autoFocus>
+          <Button color="warning" onClick={handleDelete} autoFocus>
             Yes
           </Button>
         </DialogActions>

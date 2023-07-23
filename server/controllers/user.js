@@ -43,7 +43,7 @@ export const signin = async (req, res) => {
         id: oldUser._id
       },
       secret,
-      { expiresIn: "1h" }
+      { expiresIn: "1w" }
     );
 
     res.status(200).json({

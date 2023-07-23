@@ -1,7 +1,7 @@
 {
-  "name": "authentication-server",
+  "name": "vithiru",
   "version": "1.0.0",
-  "description": "Authentication and basic user account management.",
+  "description": "Personal Dashboard.",
   "main": "index.js",
   "type": "module",
   "scripts": {

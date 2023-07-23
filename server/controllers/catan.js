@@ -915,7 +915,7 @@ export const getStats = async (req, res) => {
     corrStats.players.push(corrStats.base);
 
     //console.log(playerCorrStats);
-    //console.log(sampleCorrelation([1,2,3], [1,4,9]))
+    //console.log(sampleCorrelation([5,5,4,5,5], [0.43,0.78,0.22,0.64,1]))
 
     res.status(201).json({
       playerStats,
